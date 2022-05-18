@@ -6,7 +6,11 @@ function createMap(){
         [1.47223, 110.42813]
     ];
     var map = L.map('map').fitBounds(latlngs);
-
+    var myIcon = L.icon({
+        iconUrl : './circle.png',
+        iconSize: [25, 25],
+        iconAnchor: [25, 25],
+    });
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -33,15 +37,16 @@ function createMap(){
         watch: true
     });
     var testMark = L.marker([1.46743, 110.4325]).addTo(map);
+    var userMark = L.marker([0,0]).addTo(map);
+    userMark.setIcon(myIcon);
     testMark.bindPopup('<div style="width: 300px"><img style="width: 300px; height: 200px; object-fit: cover;" src="https://images.pexels.com/photos/65438/pexels-photo-65438.jpeg?cs=srgb&dl=pexels-kaique-rocha-65438.jpg&fm=jpg&w=1280&h=1787"/><div style="font-weight: bold;">Building 1</div><div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod interdum tellus.</div><div style="display:flex; align-items: center; vertical-align: center; margin-top:10px;"><a style="flex:1; align-items: center; vertical-align: center;" href=""><img style="width: 80%;" src="3d-icon.png"/></a><a style="flex:1; align-items: center; vertical-align: center;" href=""><img style="width: 80%;" src="360-icons.png"/></a></div></div>');
     map.on('popupopen', function(e) {
         var px = map.project(e.popup._latlng);
         px.y -= e.popup._container.clientHeight/2;
         map.panTo(map.unproject(px),{animate: true});
     });
-    map.on('locationfound', function(e) {
-        var radius = e.accuracy;
-        L.circle(e.latlng, radius).addTo(map);
+    map.on('locationfound', function(e){
+        userMark.setLatLng(e.latlng);
     });
     // zoom the map to the polyline
 }
