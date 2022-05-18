@@ -5,6 +5,16 @@ function createMap(){
         [1.47223, 110.42813]
     ];
     var map = L.map('map').fitBounds(latlngs);
+    function onLocationFound(e) {
+        var radius = e.accuracy;
+    
+        L.marker(e.latlng).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+    
+        L.circle(e.latlng, radius).addTo(map);
+    }
+    
+    
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -16,22 +26,28 @@ function createMap(){
     }).addTo(map);
     var routing = L.Routing.control({
         waypoints: [
-          L.latLng(1.46787, 110.42561),
-          L.latLng(1.46743, 110.4325),
-          L.latLng(1.47223, 110.42813)
+            L.latLng(1.46787, 110.42561),
+            L.latLng(1.46743, 110.4325),
+            L.latLng(1.47223, 110.42813)
         ],
         draggableWaypoints: false,
         routeWhileDragging: false,
         lineOptions : {
             addWaypoints: false
         }
-      }).addTo(map);
-      var testMark = L.marker([1.46743, 110.4325]).addTo(map);
-      testMark.bindPopup('<div style="width: 300px"><img style="width: 300px; height: 200px; object-fit: cover;" src="https://images.pexels.com/photos/65438/pexels-photo-65438.jpeg?cs=srgb&dl=pexels-kaique-rocha-65438.jpg&fm=jpg&w=1280&h=1787"/><div style="font-weight: bold;">Building 1</div><div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod interdum tellus.</div><div style="display:flex; margin-top:10px;"><a style="flex:1" href=""><img style="width: 80%;" src="3d-icon.png"/></a><a style="flex:1" href=""><img style="width: 80%;" src="360-icons.png"/></a></div></div>');
-      map.on('popupopen', function(e) {
+    }).addTo(map);
+    map.locate({
+        setView: true,
+        maxZoom: 16,
+        watch: true
+    });
+    var testMark = L.marker([1.46743, 110.4325]).addTo(map);
+    testMark.bindPopup('<div style="width: 300px"><img style="width: 300px; height: 200px; object-fit: cover;" src="https://images.pexels.com/photos/65438/pexels-photo-65438.jpeg?cs=srgb&dl=pexels-kaique-rocha-65438.jpg&fm=jpg&w=1280&h=1787"/><div style="font-weight: bold;">Building 1</div><div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod interdum tellus.</div><div style="display:flex; align-items: center; vertical-align: center; margin-top:10px;"><a style="flex:1; align-items: center; vertical-align: center;" href=""><img style="width: 80%;" src="3d-icon.png"/></a><a style="flex:1; align-items: center; vertical-align: center;" href=""><img style="width: 80%;" src="360-icons.png"/></a></div></div>');
+    map.on('popupopen', function(e) {
         var px = map.project(e.popup._latlng);
         px.y -= e.popup._container.clientHeight/2;
         map.panTo(map.unproject(px),{animate: true});
     });
+    map.on('locationfound', onLocationFound);
     // zoom the map to the polyline
 }
