@@ -1,3 +1,4 @@
+
 function createMap(){
     var latlngs = [
         [1.46787, 110.42561],
@@ -5,16 +6,6 @@ function createMap(){
         [1.47223, 110.42813]
     ];
     var map = L.map('map').fitBounds(latlngs);
-    function onLocationFound(e) {
-        var radius = e.accuracy;
-    
-        L.marker(e.latlng).addTo(map)
-            .bindPopup("You are within " + radius + " meters from this point").openPopup();
-    
-        L.circle(e.latlng, radius).addTo(map);
-    }
-    
-    
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -48,6 +39,9 @@ function createMap(){
         px.y -= e.popup._container.clientHeight/2;
         map.panTo(map.unproject(px),{animate: true});
     });
-    map.on('locationfound', onLocationFound);
+    map.on('locationfound', function(e) {
+        var radius = e.accuracy;
+        L.circle(e.latlng, radius).addTo(map);
+    });
     // zoom the map to the polyline
 }
