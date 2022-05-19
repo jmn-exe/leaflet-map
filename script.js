@@ -71,6 +71,10 @@ function createMap(){
             }
         })
     });
+    document.getElementById('up').onclick = () => {userMark.setLatLng({lat : userMark.getLatLng().lat + 0.00005, lng: userMark.getLatLng().lng});};
+    document.getElementById('down').onclick = () => {userMark.setLatLng({lat : userMark.getLatLng().lat - 0.00005, lng: userMark.getLatLng().lng});};
+    document.getElementById('left').onclick = () => {userMark.setLatLng({lat : userMark.getLatLng().lat, lng: userMark.getLatLng().lng - 0.00005});};
+    document.getElementById('right').onclick = () => {userMark.setLatLng({lat : userMark.getLatLng().lat, lng: userMark.getLatLng().lng  + 0.00005});};
     document.addEventListener('keypress', (event) => {
         var key = event.key;
         switch(key){
