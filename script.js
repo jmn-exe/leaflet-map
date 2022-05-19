@@ -27,20 +27,9 @@ function createMap(){
     }).addTo(map);
     var routing = L.Routing.control({
         waypoints: [
-            L.latLng(1.55801, 110.35183),
-            L.latLng(1.55831, 110.34698),
-            L.latLng(1.55835, 110.34493),
-            L.latLng(1.5391, 110.3373),
-            L.latLng(1.543, 110.34117),
-            L.latLng(1.55102, 110.34156),
-            L.latLng(1.55321, 110.33327),
-            L.latLng(1.55507, 110.32225),
-            L.latLng(1.55769, 110.3408),
-            L.latLng(1.55321, 110.33327),
-            L.latLng(1.55412, 110.33445),
-            L.latLng(1.56003, 110.3453),
-            L.latLng(1.55757, 110.3486),
-            L.latLng(1.55832, 110.35132)
+            L.latLng(1.45165, 110.44186),
+            L.latLng(1.45642, 110.43967),
+            L.latLng(1.45679, 110.44339)
         ],
         draggableWaypoints: false,
         routeWhileDragging: false,
