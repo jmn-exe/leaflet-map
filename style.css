@@ -9,3 +9,9 @@ body{
 .leaflet-routing-container, .leaflet-bar, .leaflet-routing-collapsible, .leaflet-control{
     display: none;
 }
+.freemode{
+    position: fixed;
+    z-index: 9999;
+    top:5%;
+    left: 5%;
+}
