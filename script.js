@@ -1,3 +1,5 @@
+
+
 function createMap(){
     var iSizeX = 20;
     var iSizeY = 20;
@@ -7,6 +9,7 @@ function createMap(){
         [1.45679, 110.44339]
     ];
     const markArr = [];
+
     var map = L.map('map').fitBounds(latlngs);
     var myIcon = L.icon({
         iconUrl : './circle.png',
@@ -34,17 +37,11 @@ function createMap(){
             addWaypoints: false
         }
     }).addTo(map);
-    map.locate({
-        setView: true,
-        maxZoom: 16,
-        watch: true
-    });
-    latlngs.forEach((point)=>{
-        markArr.push(L.marker(point).addTo(map));
-    })
-    //console.log(calcDistance([1.45165, 110.44186],[1.45642, 110.43967]));
     var userMark = L.marker([0,0]).addTo(map);
     userMark.setIcon(myIcon);
+    latlngs.forEach((point)=>{
+        markArr.push(L.marker(point).addTo(map));
+    });
     markArr[1].bindPopup('<div style="width: 250px; display:flex; flex-direction: column; justify-content: center; align-items: center;"><img style="width: 250px; height: 150px; object-fit: cover;" src="https://images.pexels.com/photos/65438/pexels-photo-65438.jpeg?cs=srgb&dl=pexels-kaique-rocha-65438.jpg&fm=jpg&w=1280&h=1787"/><div style="font-weight: bold;">Building 1</div><div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod interdum tellus.</div><div style="display:flex; justify-content: center; align-items: center; margin-top:10px;"><div style="display:flex;"><a style="flex:1;display:flex; justify-content: center; align-items: center;" href=""><img style="width: 70%;" src="3d-icon.png"/></a><a style="flex:1;display:flex; justify-content: center; align-items: center;" href=""><img style="width: 70%;" src="360-icons.png"/></a></div></div></div>');
     map.on('popupopen', function(e) {
         var px = map.project(e.popup._latlng);
@@ -54,22 +51,43 @@ function createMap(){
     map.on('locationfound', function(e){
         userMark.setLatLng(e.latlng);
     });
+    map.locate({
+        setView: true,
+        maxZoom: 17,
+        enableHighAccuracy: true,
+        watch: true
+    });
+    
+    //console.log(calcDistance([1.45165, 110.44186],[1.45642, 110.43967]));
+
     document.getElementById('freemode').onclick =  () =>{
         map.stopLocate();
     };
+
+    var nearBuilding = false;
+    var nearbyBuilding;
     userMark.on('move', (e)=>{
         markArr.forEach((marker)=>{
             var userPoint = [userMark.getLatLng().lat,userMark.getLatLng().lng];
             var markPoint = [marker.getLatLng().lat,marker.getLatLng().lng];
-            if((calcDistance(userPoint,markPoint)) <= 0.0007){
+            if((calcDistance(userPoint,markPoint)) <= 0.00085){
+                nearbyBuilding = marker.getLatLng();
                 marker.openPopup();
+                nearBuilding = true;
+            }else{
+                if(nearBuilding && marker.getLatLng() == nearbyBuilding){
+                    //console.log(calcDistance(userPoint,markPoint));
+                    //console.log('leaving');
+                    marker.closePopup();
+                    map.panTo(userMark.getLatLng());
+                }
+                
             }
         })
     });
     document.getElementById('centerBtn').onclick = () => {
         map.panTo(userMark.getLatLng());
     }
-
 
     document.getElementById('up').onclick = () => {userMark.setLatLng({lat : userMark.getLatLng().lat + 0.00005, lng: userMark.getLatLng().lng});};
     document.getElementById('down').onclick = () => {userMark.setLatLng({lat : userMark.getLatLng().lat - 0.00005, lng: userMark.getLatLng().lng});};
@@ -92,7 +110,7 @@ function createMap(){
                 break;
         }
         // Alert the key name and key code on keydown
-        
+
       }, false);
     // zoom the map to the polyline
 }
@@ -100,3 +118,7 @@ function createMap(){
 function calcDistance(p1,p2){
     return(Math.sqrt(Math.pow(p1[0]-p2[0],2)+Math.pow(p1[1]-p2[1],2)));
 };
+
+function closeWelcome(){
+    document.getElementById('welcomeBox').remove();
+}

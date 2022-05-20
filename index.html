@@ -12,6 +12,7 @@
    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
    crossorigin=""></script>
+  
    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
@@ -40,5 +41,17 @@
         </div>
     </div>
     <div class="header">Kuching Heritage Trail</div>
+    <div class="welcome-box" id="welcomeBox">
+        <button class="exit-button" onclick="closeWelcome()">x</button>
+        <div class="welcome-title">Welcome to Kuching Heritage Trail</div>
+        <div class="welcome-text">Enjoy your bus ride while discovering and learning about our buildings.
+            Please follow the instructions to use the web app:
+            <ol>
+            <li>Make sure you location services is on.</li>
+            <li>Allow location access for the web app.</li>
+            <li>Enjoy your ride.</li>
+            </ol>
+        </div>
+    </div>
 </body>
 </html>
