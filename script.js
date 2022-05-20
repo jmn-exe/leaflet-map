@@ -73,7 +73,7 @@ function createMap(){
                 marker.openPopup();
                 nearBuilding = true;
             }else{
-                if(nearBuilding == true && marker.getLatLng() == nearbyBuilding){
+                if(nearBuilding && marker.getLatLng() == nearbyBuilding){
                     //console.log(calcDistance(userPoint,markPoint));
                     //console.log('leaving');
                     marker.closePopup();
