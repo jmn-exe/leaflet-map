@@ -49,12 +49,27 @@ function createMap(){
     map.on('locationfound', function(e){
         userMark.setLatLng(e.latlng);
     });
-    map.locate({
+    var lOptions = {
+        enableHighAccuracy : false,
+        timeout : 2000,
+        maximumAge : 0
+    }
+    updateLocation(userMark);
+    /*
+    var locator = navigator.geolocation.watchPosition((pos)=>{
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        userMark.setLatLng([lat,lng]);
+        console.log('Lat and Lng is '+lat+', '+lng);
+    }, ()=>{
+        console.log("Error when fetching location.");
+    }, lOptions);*/
+    /*map.locate({
         setView: true,
         maxZoom: 17,
         enableHighAccuracy: true,
         watch: true
-    });
+    });*/
     
     //console.log(calcDistance([1.45165, 110.44186],[1.45642, 110.43967]));
 
@@ -122,4 +137,15 @@ function calcDistance(p1,p2){
 
 function closeWelcome(){
     document.getElementById('welcomeBox').remove();
+}
+
+async function updateLocation(mark){
+    setInterval(()=>{
+        navigator.geolocation.getCurrentPosition((pos)=>{
+            var lat = pos.coords.latitude;
+            var lng = pos.coords.longitude;
+            console.log(pos.coords);
+            mark.setLatLng([lat,lng]);
+        })
+    },3000);
 }
